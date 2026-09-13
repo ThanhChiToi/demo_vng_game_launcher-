@@ -3,14 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "dist-electron/main.js",
+  "main": "dist-electron/main.cjs",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
-    "electron:build": "tsc electron/main.ts electron/preload.ts --outDir dist-electron --module commonjs --target es2020 --ignoreConfig && vite build && electron-builder"
+    "build:main": "tsc electron/main.ts electron/preload.ts --outDir dist-electron --module commonjs --target es2020 --ignoreConfig && node scripts/rename-cjs.cjs",
+    "electron:dev": "npm run build:main && concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "npm run build:main && npm run build && electron-builder"
   },
   "build": {
     "appId": "com.vnggames.launcher",

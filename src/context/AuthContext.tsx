@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import type { User, AuthResponse, AuthContextType } from '../types/auth';
 
 // 1. Khởi tạo Context với giá trị mặc định là undefined

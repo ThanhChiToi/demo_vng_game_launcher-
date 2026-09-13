@@ -3,6 +3,11 @@ import path from 'path';
 
 let mainWindow: BrowserWindow | null = null;
 
+// Khi chạy `npm run electron:dev` app chưa được đóng gói -> nạp từ Vite dev server để có HMR.
+// Có thể ghi đè bằng biến môi trường VITE_DEV_SERVER_URL nếu đổi port.
+const DEV_SERVER_URL =
+  process.env.VITE_DEV_SERVER_URL ?? (app.isPackaged ? null : 'http://localhost:5173');
+
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -11,15 +16,15 @@ app.whenReady().then(() => {
     frame: false,
     show: false,
     webPreferences: {
-      // Khi build, preload.js sẽ nằm chung thư mục dist-electron với main.js
-      preload: path.join(__dirname, 'preload.js'),
+      // Khi build, preload.cjs sẽ nằm chung thư mục dist-electron với main.cjs
+      preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
       contextIsolation: true,
     },
   });
 
-  if (process.env.VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
+  if (DEV_SERVER_URL) {
+    mainWindow.loadURL(DEV_SERVER_URL);
   } else {
     // Trỏ chính xác ra thư mục dist chứa index.html
     mainWindow.loadFile(path.resolve(__dirname, '../dist/index.html'));
