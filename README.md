@@ -1,13 +1,13 @@
 # VNGGames Launcher
 
-Game launcher desktop dựng bằng **Electron 44 + React 19 + TypeScript 6 + Vite 8**.
+Game launcher desktop dựng bằng **Electron 44 + React 19 + TypeScript 6 + Vite 8 + Tailwind 4**.
 Backend dự kiến: **.NET Core Web API** (mặc định `https://localhost:7123/api`).
 
 ## Chạy dự án
 
 ```bash
 npm install
-cp .env.example .env     # chỉnh VITE_API_URL nếu backend đổi port
+cp .env.example .env     # chỉnh VITE_API_URL; đặt VITE_USE_MOCK_AUTH=true nếu chưa có backend
 npm run electron:dev
 ```
 

@@ -35,6 +35,8 @@ export function LoginForm() {
       const password = String(formData.get('password') ?? '');
 
       try {
+        // Khi VITE_USE_MOCK_AUTH=true thì loginRequest tự trả phiên giả lập,
+        // nên chỗ này không cần biết đang chạy mock hay API thật.
         await login(await loginRequest({ username, password }));
         return { username, error: null };
       } catch (error) {

@@ -79,9 +79,12 @@ src/                               ── RENDERER (React) ──
         AuthProvider.tsx           Provider
       components/
         LoginForm/
-    dashboard/
+    library/                     Kho game
       index.ts
-      components/DashboardPage/
+      model/game.types.ts
+      components/
+        DashboardPage/           Màn hình chính: hero banner + lưới game
+        GameCard/                Chi tiết nội bộ, KHÔNG export ra index.ts
 ```
 
 ---
@@ -91,8 +94,8 @@ src/                               ── RENDERER (React) ──
 | Thứ cần thêm | Đặt ở | Ví dụ có sẵn |
 | --- | --- | --- |
 | Nút bấm, input, modal... dùng ở nhiều feature | `src/shared/ui/<Ten>/` | `shared/ui/Button/` |
-| Màn hình mới (game list, settings...) | `src/features/<ten>/` | `features/dashboard/` |
-| Component chỉ dùng trong 1 feature | `src/features/<ten>/components/<Ten>/` | `features/auth/components/LoginForm/` |
+| Màn hình mới (download, settings...) | `src/features/<ten>/` | `features/library/` |
+| Component chỉ dùng trong 1 feature | `src/features/<ten>/components/<Ten>/` | `features/library/components/GameCard/` |
 | Hàm gọi API | `src/features/<ten>/api/<ten>.api.ts` | `features/auth/api/auth.api.ts` |
 | Interface / DTO | `src/features/<ten>/model/<ten>.types.ts` | `features/auth/model/auth.types.ts` |
 | Custom hook của 1 feature | `src/features/<ten>/model/use<Ten>.ts` | (chưa có) |
@@ -133,7 +136,44 @@ LoginForm/                    ✅ có CSS riêng
   LoginForm.module.css
 
 routes/RequireAuth.tsx        ✅ không có file kèm, để phẳng
+GameCard/GameCard.tsx         ✅ style bằng Tailwind, không có file CSS
 ```
+
+---
+
+## 4.5 Styling — Tailwind hay CSS Modules?
+
+Dự án dùng **Tailwind v4** (qua `@tailwindcss/vite`), đồng thời vẫn còn một số
+component viết bằng **CSS Modules**. Hai hệ này sống chung được vì **design token
+khai chung một chỗ**.
+
+```css
+/* src/index.css */
+@theme {
+  --color-brand: #ff5722;   /* cam VNG */
+  --color-surface: #1e1e1e;
+}
+```
+
+Khai trong `@theme` thì Tailwind sinh ra **cả hai**:
+
+| Cách dùng | Ví dụ |
+| --- | --- |
+| Utility class | `className="bg-brand text-surface"` |
+| Biến CSS | `background-color: var(--color-brand);` |
+
+Nhờ vậy `Button`, `LoginForm`, `TitleBar`, `Splash` (CSS Modules) và các component
+mới viết bằng Tailwind vẫn ra đúng một bảng màu.
+
+**Chọn cái nào cho component mới?**
+
+- **Tailwind** cho phần lớn trường hợp — nhanh, không phải nghĩ tên class.
+- **CSS Modules** khi cần `@keyframes`, selector phức tạp, hoặc style quá dài
+  làm JSX rối mắt (xem `Splash.module.css`).
+
+**Luôn dùng token, đừng hardcode.** Viết `bg-brand` chứ đừng `bg-[#ff5722]`;
+viết `var(--color-surface)` chứ đừng `#1e1e1e`. Đổi màu thương hiệu thì chỉ sửa
+một chỗ trong `index.css`.
 
 ---
 
@@ -207,14 +247,13 @@ Rồi thêm vào barrel:
 export { Card } from './Card/Card';
 ```
 
-Dùng design token trong `src/index.css`, đừng hardcode mã màu:
+Hoặc gọn hơn bằng Tailwind, khỏi cần file CSS (xem §4.5 để biết khi nào chọn cái nào):
 
-```css
-/* Card.module.css */
-.card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+```tsx
+export function Card({ children }: { children: ReactNode }) {
+  return (
+    <div className="rounded-lg border border-border bg-surface p-4">{children}</div>
+  );
 }
 ```
 
@@ -447,6 +486,24 @@ Trạng thái do main process nắm (ví dụ cửa sổ đang phóng to) thì d
 
 Vite không biết alias này. Import giá trị qua nó sẽ vỡ lúc chạy.
 
+### Flex item bị ép xẹp dù đã đặt chiều cao
+
+Trong container `flex flex-col`, mọi con đều **co lại được** (`flex-shrink: 1`).
+Đặt `h-72` mà nội dung dài hơn màn hình thì nó vẫn bị bóp còn ~100px, rồi
+`overflow-hidden` cắt mất chữ bên trong — nhìn như component hỏng.
+
+```tsx
+<div className="relative h-72 shrink-0 overflow-hidden">   {/* 👈 shrink-0 */}
+```
+
+Quy tắc: phần tử có chiều cao cố định nằm trong `flex-col` thì **luôn thêm `shrink-0`**.
+
+### Đăng nhập giả lập
+
+Chưa có backend .NET thì đặt `VITE_USE_MOCK_AUTH=true` trong `.env` — gõ tài khoản
+gì cũng vào được. Logic mock nằm trong `features/auth/api/auth.api.ts`, **không**
+comment code trong component (dễ lỡ tay commit). Đổi `.env` thì phải **restart** dev server.
+
 ---
 
 ## 8. Checklist trước khi commit
@@ -458,6 +515,7 @@ npm run build
 
 - [ ] Feature mới đã có `index.ts` chưa?
 - [ ] Có import chọc thẳng vào ruột feature khác không?
-- [ ] CSS dùng `var(--color-*)` chứ không hardcode mã màu?
+- [ ] Màu dùng token (`bg-brand` / `var(--color-brand)`) chứ không hardcode `#ff5722`?
+- [ ] Phần tử cao cố định trong `flex-col` đã có `shrink-0` chưa?
 - [ ] Component mới có lỡ dùng `React.FC` không? (đừng dùng)
 - [ ] Thêm kênh IPC thì đã làm đủ cả 5 bước ở §6.6 chưa?

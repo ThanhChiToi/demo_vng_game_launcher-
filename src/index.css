@@ -1,5 +1,13 @@
-/* Design token dùng chung cho toàn app — tương đương styles.css của Angular. */
-:root {
+@import 'tailwindcss';
+
+/**
+ * Design token dùng chung cho toàn app (tương đương styles.css của Angular).
+ *
+ * Khai trong @theme nên Tailwind vừa sinh ra utility class (bg-brand, text-brand...)
+ * vừa phát ra biến CSS `--color-brand` ở :root — nhờ vậy các component viết bằng
+ * CSS Modules (Button, LoginForm, TitleBar, Splash) vẫn dùng var(--color-*) như cũ.
+ */
+@theme {
   --color-bg: #121212;
   --color-surface: #1e1e1e;
   --color-surface-raised: #2a2a2a;
@@ -20,14 +28,10 @@
   --color-danger-text: #ff5252;
 
   --font-sans: 'Segoe UI', system-ui, Roboto, sans-serif;
-
-  color-scheme: dark;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+:root {
+  color-scheme: dark;
 }
 
 html,
