@@ -1,6 +1,6 @@
 import { createHashRouter, Navigate } from 'react-router-dom';
 import { DashboardPage } from '@/features/dashboard';
-import { AppLayout } from './layout/AppLayout';
+import { AppLayout } from './layout/AppLayout/AppLayout';
 import { LoginRoute } from './routes/LoginRoute';
 import { RequireAuth } from './routes/RequireAuth';
 

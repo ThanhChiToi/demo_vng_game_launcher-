@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { TitleBar } from './TitleBar/TitleBar';
+import { TitleBar } from '../TitleBar/TitleBar';
 import styles from './AppLayout.module.css';
 
 /** Khung chung của mọi màn hình: thanh title cố định trên cùng + nội dung bên dưới. */

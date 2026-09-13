@@ -24,6 +24,9 @@ npm run electron:dev
 
 ## Cấu trúc
 
+> 📘 Xem [ARCHITECTURE.md](ARCHITECTURE.md) để biết chi tiết đặt file ở đâu, quy ước đặt tên,
+> và công thức từng bước khi thêm component / feature / route / kênh IPC.
+
 Chia theo **feature**, không chia theo loại file. Tương ứng 1-1 với cách Angular
 hiện đại tổ chức `core / shared / features`:
 
