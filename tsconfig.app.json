@@ -16,6 +16,15 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path alias: @/... -> src/... (khớp với resolve.alias trong vite.config.ts).
+       TS 6 đã bỏ baseUrl, "paths" giờ resolve tương đối so với chính file tsconfig này. */
+    "paths": {
+      "@/*": ["./src/*"],
+      /* Chỉ dùng cho import type từ hợp đồng IPC. Không có runtime nên Vite
+         không cần biết alias này — mọi import qua đây phải là 'import type'. */
+      "#electron/*": ["./electron/*"]
+    },
+
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,

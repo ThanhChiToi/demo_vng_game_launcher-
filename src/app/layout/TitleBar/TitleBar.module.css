@@ -1,0 +1,57 @@
+.titleBar {
+  height: 32px;
+  background-color: var(--color-titlebar);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.dragArea {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  /* Trong CSS thuần không cần cast `as React.CSSProperties` như khi viết inline style */
+  -webkit-app-region: drag;
+}
+
+.appTitle {
+  font-size: 12px;
+  color: var(--color-text-dim);
+}
+
+.windowControls {
+  display: flex;
+  height: 100%;
+  -webkit-app-region: no-drag;
+}
+
+.controlBtn {
+  width: 46px;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  color: var(--color-text-dim);
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.controlBtn:hover {
+  background-color: var(--color-surface-raised);
+  color: var(--color-text-strong);
+}
+
+.closeBtn {
+  font-size: 13px;
+}
+
+.closeBtn:hover {
+  background-color: var(--color-danger);
+  color: #fff;
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.electron.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.electron.build.tsbuildinfo",
+    "noEmit": false,
+    "outDir": "dist-electron",
+    "rootDir": "electron",
+    "sourceMap": true
+  }
+}
