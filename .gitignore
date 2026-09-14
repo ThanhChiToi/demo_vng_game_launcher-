@@ -1,6 +1,2 @@
 node_modules/ 
-build/ 
-.env 
-dist/
-dist-electron/
 release/

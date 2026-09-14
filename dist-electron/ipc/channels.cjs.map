@@ -1,0 +1,1 @@
+{"version":3,"file":"channels.cjs","sourceRoot":"","sources":["../../electron/ipc/channels.cts"],"names":[],"mappings":";;;AAAA;;;GAGG;AACU,QAAA,QAAQ,GAAG;IACtB,cAAc,EAAE,iBAAiB;IACjC,oBAAoB,EAAE,wBAAwB;IAC9C,WAAW,EAAE,cAAc;IAC3B,iBAAiB,EAAE,qBAAqB;IACxC,sBAAsB,EAAE,0BAA0B;IAElD,oBAAoB,EAAE,wBAAwB;IAC9C,cAAc,EAAE,kBAAkB;IAClC,cAAc,EAAE,kBAAkB;IAClC,iBAAiB,EAAE,qBAAqB;CAChC,CAAC"}
